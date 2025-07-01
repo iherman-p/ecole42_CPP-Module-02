@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:11:30 by iherman-          #+#    #+#             */
-/*   Updated: 2025/06/28 17:38:55 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:04:02 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 #include <cmath>
 
 const int Fixed::fract = 8;
+
+/*///////////////////////////////////*/
+//		Con/Destructors              //
+/*///////////////////////////////////*/
+
+/*. ===> Constructors <=== .*/
 
 Fixed::Fixed()
 {
@@ -34,27 +40,67 @@ Fixed::Fixed(const float number)
 	raw_bits = int(roundf(number * (1 << fract)));
 }
 
+/*. ===> Copy constructor <=== .*/
+
 Fixed::Fixed(const Fixed &to_cpy)
 {
 	std::cout << "Copy constructor called" << std::endl;
 	*this = to_cpy;
 }
 
+/*. ===> Destructor <=== .*/
+
 Fixed::~Fixed()
 {
 	std::cout << "Destructor called" << std::endl;
 }
 
-/* comparison */
-Fixed&	Fixed::min(Fixed& f1, Fixed& f2)
+/*///////////////////////////////////*/
+//		Comparison                   //
+/*///////////////////////////////////*/
+
+/*. ===> Comparison operators <=== .*/
+
+bool	Fixed::operator< (const Fixed &other) const
 {
-	if (f1 <= f2)
-		return (f1);
-	else
-		return (f2);
+	return (this->raw_bits < other.raw_bits);
 }
 
-Fixed&	Fixed::min(const Fixed& f1, const Fixed& f2)
+bool	Fixed::operator== (const Fixed &other) const
+{
+	if (!(*this < other || other < *this))
+		return (true);
+	else
+		return (false);
+}
+
+bool	Fixed::operator<= (const Fixed &other) const
+{
+	if (*this == other || *this < other)
+		return (true);
+	else
+		return (false);
+}
+
+bool	Fixed::operator>= (const Fixed &other) const
+{
+	if (other == *this || other < *this)
+		return (true);
+	else
+		return (false);
+}
+
+bool	Fixed::operator!= (const Fixed &other) const
+{
+	if ((*this == other))
+		return (false);
+	else
+		return (true);
+}
+
+/*. ===> Min/Max <=== .*/
+
+Fixed&	Fixed::min(Fixed& f1, Fixed& f2)
 {
 	if (f1 <= f2)
 		return (f1);
@@ -70,7 +116,15 @@ Fixed&	Fixed::max(Fixed& f1, Fixed& f2)
 		return (f2);
 }
 
-Fixed&	Fixed::max(const Fixed& f1, const Fixed& f2)
+const Fixed&	Fixed::min(const Fixed& f1, const Fixed& f2)
+{
+	if (f1 <= f2)
+		return (f1);
+	else
+		return (f2);
+}
+
+const Fixed&	Fixed::max(const Fixed& f1, const Fixed& f2)
 {
 	if (f1 >= f2)
 		return (f1);
@@ -78,14 +132,28 @@ Fixed&	Fixed::max(const Fixed& f1, const Fixed& f2)
 		return (f2);
 }
 
-/* setters */
+/*///////////////////////////////////*/
+//		Setters                      //
+/*///////////////////////////////////*/
+
+Fixed &Fixed::operator= (const Fixed &to_cpy)
+{
+	std::cout << "Copy assignment operator called" << std::endl;
+	if (this != &to_cpy)
+		this->raw_bits = to_cpy.getRawBits();
+	return *this;
+}
+
 void	Fixed::setRawBits(int const raw)
 {
 	this->raw_bits = raw;
 	std::cout << "setRawBits member function called" << std::endl;
 }
 
-/* getters */
+/*///////////////////////////////////*/
+//		Getters                      //
+/*///////////////////////////////////*/
+
 int	Fixed::getRawBits() const
 {
 	std::cout << "getRawBits member function called" << std::endl;
@@ -102,16 +170,92 @@ int	Fixed::toInt() const
 	return (raw_bits / (1 << fract));
 }
 
-/* operators */
-Fixed &Fixed::operator = (const Fixed &to_cpy)
+/*///////////////////////////////////*/
+//		Arithmetic operators         //
+/*///////////////////////////////////*/
+
+/* + */
+
+Fixed	Fixed::operator+ (const Fixed& other) const
 {
-	std::cout << "Copy assignment operator called" << std::endl;
-	if (this != &to_cpy)
-		this->raw_bits = to_cpy.getRawBits();
-	return *this;
+	Fixed	ret(*this);
+
+	ret.raw_bits += other.raw_bits;
+	return (ret);
 }
 
-std::ostream	&operator << (std::ostream &out, const Fixed &fixed)
+Fixed	Fixed::operator+ (const float number) const
+{
+	return (*this + Fixed(number));
+}
+
+/* - */
+
+Fixed	Fixed::operator- (const Fixed& other) const
+{
+	Fixed	ret(*this);
+
+	ret.raw_bits -= other.raw_bits;
+	return (ret);
+}
+
+Fixed	Fixed::operator- (const float number) const
+{
+	return (*this - Fixed(number));
+}
+
+/* * */
+
+Fixed	Fixed::operator* (const Fixed& other) const
+{
+	Fixed	ret(*this);
+	int64_t	temp;
+
+	temp = ret.raw_bits * other.raw_bits;
+	ret.raw_bits = (temp >> fract);
+	return (ret);
+}
+
+Fixed	Fixed::operator* (const float number) const
+{
+	return (*this * Fixed(number));
+}
+
+/* / */
+
+Fixed	Fixed::operator/ (const Fixed& other) const
+{
+	Fixed	ret(*this);
+
+	ret.raw_bits = (ret.raw_bits << fract) / other.raw_bits;
+	return (ret);
+}
+
+Fixed	Fixed::operator/ (const float number) const
+{
+	return (*this / Fixed(number));
+}
+
+/* yeah... */
+
+Fixed&	Fixed::operator++()
+{
+		++raw_bits;
+		return *this;
+}
+
+Fixed	Fixed::operator++(int)
+{
+		Fixed temp = *this;
+		++(*this);
+		return temp;
+}
+
+/*///////////////////////////////////*/
+//		Misc                         //
+/*///////////////////////////////////*/
+
+std::ostream	&operator<< (std::ostream &out, const Fixed &fixed)
 {
 	out << fixed.toFloat();
 	return (out);

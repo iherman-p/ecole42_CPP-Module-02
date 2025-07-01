@@ -6,12 +6,14 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:10:04 by iherman-          #+#    #+#             */
-/*   Updated: 2025/06/28 17:35:59 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:02:55 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FIXED_HPP
 # define FIXED_HPP
+
+# define DEBUG_MESSAGES 1
 
 #include <ostream>
 
@@ -28,21 +30,43 @@ class Fixed
 		~Fixed();
 
 		/* comparison */
-		Fixed	&operator = (const Fixed &to_cpy);
-		Fixed&	min(Fixed& f1, Fixed& f2);
-		Fixed&	min(const Fixed& f1, const Fixed& f2);
-		Fixed&	max(Fixed& f1, Fixed& f2);
-		Fixed&	max(const Fixed& f1, const Fixed& f2);
+		bool	operator< (const Fixed &other) const;
+		bool	operator== (const Fixed &other) const;
+		bool	operator<= (const Fixed &other) const;
+		bool	operator>= (const Fixed &other) const;
+		bool	operator!= (const Fixed &other) const;
+		static Fixed&		min(Fixed& f1, Fixed& f2);
+		static Fixed&		max(Fixed& f1, Fixed& f2);
+		static const Fixed&	min(const Fixed& f1, const Fixed& f2);
+		static const Fixed&	max(const Fixed& f1, const Fixed& f2);
 
 		/* setters */
+		Fixed	&operator= (const Fixed &to_cpy);
 		void	setRawBits(int const raw);
 
 		/* getters */
 		float	toFloat() const;
 		int		toInt() const;	
 		int		getRawBits() const;
+
+		/* arithmetic operators */
+		Fixed	operator+ (const Fixed& other) const;
+		Fixed	operator+ (const float number) const;
+		
+		Fixed	operator- (const Fixed& other) const;
+		Fixed	operator- (const float number) const;
+		
+		Fixed	operator* (const Fixed& other) const;
+		Fixed	operator* (const float number) const;
+
+		Fixed	operator/ (const Fixed& other) const;
+		Fixed	operator/ (const float number) const;
+
+		Fixed&	operator++();
+		Fixed	operator++(int);
+
 };
 
-std::ostream	&operator << (std::ostream &out, const Fixed &fixed);
+std::ostream	&operator<< (std::ostream &out, const Fixed &fixed);
 
 #endif // FIXED_HPP
