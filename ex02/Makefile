@@ -1,15 +1,18 @@
 NAME = a.out
 
-SRC = Fixed.cpp main.cpp
+SRC = main.cpp Fixed.cpp 
 
 OBJ = $(SRC:.cpp=.o)
 
-FLAGS= -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@c++ $(FLAGS) $(OBJ) -o $(NAME)
+
+exclude_debug: FLAGS += -D ALLOW_FIXED_DEBUG=0
+exclude_debug: re
 
 %.o: %.cpp
 	@c++ -c $(FLAGS) -o $@ $<
@@ -22,4 +25,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: re clean fclean all
+.PHONY: re clean fclean all exclude_debug

@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:11:30 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/01 18:04:02 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:07:33 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,27 @@ const int Fixed::fract = 8;
 
 /*. ===> Constructors <=== .*/
 
+static void	fixed_debug_messages(std::string message, bool allowed)
+{
+	if (allowed)
+		std::cout << message << std::endl;
+}
+
 Fixed::Fixed()
 {
-	std::cout << "Default constructor called" << std::endl;
+	fixed_debug_messages("Default constructor called", ALLOW_FIXED_DEBUG);
 	this->raw_bits = 0;
 }
 
 Fixed::Fixed(const int number)
 {
-	std::cout << "Int constructor called" << std::endl;
+	fixed_debug_messages("Int constructor called", ALLOW_FIXED_DEBUG);
 	raw_bits = (number * (1 << fract));
 }
 
 Fixed::Fixed(const float number)
 {
-	std::cout << "Float constructor called" << std::endl;
+	fixed_debug_messages("Float constructor called", ALLOW_FIXED_DEBUG);
 	raw_bits = int(roundf(number * (1 << fract)));
 }
 
@@ -44,7 +50,7 @@ Fixed::Fixed(const float number)
 
 Fixed::Fixed(const Fixed &to_cpy)
 {
-	std::cout << "Copy constructor called" << std::endl;
+	fixed_debug_messages("Copy constructor called", ALLOW_FIXED_DEBUG);
 	*this = to_cpy;
 }
 
@@ -52,7 +58,7 @@ Fixed::Fixed(const Fixed &to_cpy)
 
 Fixed::~Fixed()
 {
-	std::cout << "Destructor called" << std::endl;
+	fixed_debug_messages("Destructor called", ALLOW_FIXED_DEBUG);
 }
 
 /*///////////////////////////////////*/
@@ -138,7 +144,7 @@ const Fixed&	Fixed::max(const Fixed& f1, const Fixed& f2)
 
 Fixed &Fixed::operator= (const Fixed &to_cpy)
 {
-	std::cout << "Copy assignment operator called" << std::endl;
+	fixed_debug_messages("Copy assignment operator called", ALLOW_FIXED_DEBUG);
 	if (this != &to_cpy)
 		this->raw_bits = to_cpy.getRawBits();
 	return *this;
@@ -147,7 +153,7 @@ Fixed &Fixed::operator= (const Fixed &to_cpy)
 void	Fixed::setRawBits(int const raw)
 {
 	this->raw_bits = raw;
-	std::cout << "setRawBits member function called" << std::endl;
+	fixed_debug_messages("setRawBits member function called", ALLOW_FIXED_DEBUG);
 }
 
 /*///////////////////////////////////*/
@@ -156,7 +162,7 @@ void	Fixed::setRawBits(int const raw)
 
 int	Fixed::getRawBits() const
 {
-	std::cout << "getRawBits member function called" << std::endl;
+	fixed_debug_messages("getRawBits member function called", ALLOW_FIXED_DEBUG);
 	return (this->raw_bits);
 }
 

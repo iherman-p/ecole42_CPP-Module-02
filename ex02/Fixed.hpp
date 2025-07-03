@@ -6,14 +6,16 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:10:04 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/01 18:02:55 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:07:51 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FIXED_HPP
 # define FIXED_HPP
 
-# define DEBUG_MESSAGES 1
+# ifndef ALLOW_FIXED_DEBUG
+#  define ALLOW_FIXED_DEBUG 1
+# endif
 
 #include <ostream>
 
