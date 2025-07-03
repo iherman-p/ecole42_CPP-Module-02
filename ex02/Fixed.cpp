@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:11:30 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/03 15:07:33 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:34:42 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ Fixed	Fixed::operator/ (const float number) const
 	return (*this / Fixed(number));
 }
 
-/* yeah... */
+/* increment */
 
 Fixed&	Fixed::operator++()
 {
@@ -256,6 +256,20 @@ Fixed	Fixed::operator++(int)
 		++(*this);
 		return temp;
 }
+
+Fixed&	Fixed::operator--()
+{
+		--raw_bits;
+		return *this;
+}
+
+Fixed	Fixed::operator--(int)
+{
+		Fixed temp = *this;
+		--(*this);
+		return temp;
+}
+
 
 /*///////////////////////////////////*/
 //		Misc                         //

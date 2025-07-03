@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:10:04 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/03 15:07:51 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:35:38 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ class Fixed
 		const static int	fract;
 	public:
 		Fixed();
-		Fixed(const int number);
-		Fixed(const float number);
+		explicit Fixed(const int number);
+		explicit Fixed(const float number);
 		Fixed(const Fixed &to_cpy);
 		~Fixed();
 
@@ -67,6 +67,8 @@ class Fixed
 		Fixed&	operator++();
 		Fixed	operator++(int);
 
+		Fixed&	operator--();
+		Fixed	operator--(int);
 };
 
 std::ostream	&operator<< (std::ostream &out, const Fixed &fixed);
