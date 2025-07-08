@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:11:30 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/03 15:34:42 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:12:11 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ Fixed::Fixed(const float number)
 
 /*. ===> Copy constructor <=== .*/
 
-Fixed::Fixed(const Fixed &to_cpy)
+Fixed::Fixed(const Fixed &to_cpy) 
+		: raw_bits(to_cpy.raw_bits)
 {
-	fixed_debug_messages("Copy constructor called", ALLOW_FIXED_DEBUG);
-	*this = to_cpy;
+	std::cout << "Copy constructor called" << std::endl;
 }
 
 /*. ===> Destructor <=== .*/
@@ -269,7 +269,6 @@ Fixed	Fixed::operator--(int)
 		--(*this);
 		return temp;
 }
-
 
 /*///////////////////////////////////*/
 //		Misc                         //
