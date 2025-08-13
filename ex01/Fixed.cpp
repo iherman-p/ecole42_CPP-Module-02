@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:11:30 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/08 16:09:17 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:36:11 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,28 @@
 
 const int Fixed::fract = 8;
 
+/*. ===> De/Constructors & Assignment <=== .*/
+
 Fixed::Fixed()
+		: raw_bits(0)
 {
 	std::cout << "Default constructor called" << std::endl;
-	this->raw_bits = 0;
 }
 
 Fixed::Fixed(const int number)
+	: raw_bits(number * (1 << fract))
 {
 	std::cout << "Int constructor called" << std::endl;
-	raw_bits = (number * (1 << fract));
 }
 
 Fixed::Fixed(const float number)
+	: raw_bits(static_cast<int>(roundf(number * (1 << fract))))
 {
 	std::cout << "Float constructor called" << std::endl;
-	raw_bits = int(roundf(number * (1 << fract)));
 }
 
-Fixed::Fixed(const Fixed &to_cpy) 
-		: raw_bits(to_cpy.raw_bits)
+Fixed::Fixed(const Fixed &other) 
+		: raw_bits(other.raw_bits)
 {
 	std::cout << "Copy constructor called" << std::endl;
 }
@@ -45,19 +47,29 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << std::endl;
 }
 
-/* setters */
+Fixed &Fixed::operator=(const Fixed &other)
+{
+	std::cout << "Copy assignment operator called" << std::endl;
+	if (this != &other)
+		this->raw_bits = other.raw_bits;
+	return *this;
+}
+
+/*. ===> Getter(s) & Setter(s) <=== .*/
+
 void	Fixed::setRawBits(int const raw)
 {
 	this->raw_bits = raw;
 	std::cout << "setRawBits member function called" << std::endl;
 }
 
-/* getters */
 int	Fixed::getRawBits() const
 {
 	std::cout << "getRawBits member function called" << std::endl;
 	return (this->raw_bits);
 }
+
+/*. ===> Conversion <=== .*/
 
 float	Fixed::toFloat() const
 {
@@ -69,16 +81,9 @@ int	Fixed::toInt() const
 	return (raw_bits / (1 << fract));
 }
 
-/* operators */
-Fixed &Fixed::operator = (const Fixed &to_cpy)
-{
-	std::cout << "Copy assignment operator called" << std::endl;
-	if (this != &to_cpy)
-		this->raw_bits = to_cpy.getRawBits();
-	return *this;
-}
+/*. ===> i/o stream <=== .*/
 
-std::ostream	&operator << (std::ostream &out, const Fixed &fixed)
+std::ostream	&operator<<(std::ostream &out, const Fixed &fixed)
 {
 	out << fixed.toFloat();
 	return (out);

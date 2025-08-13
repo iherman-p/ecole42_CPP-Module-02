@@ -6,7 +6,7 @@
 /*   By: iherman- <iherman-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:10:04 by iherman-          #+#    #+#             */
-/*   Updated: 2025/07/03 15:35:38 by iherman-         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:24:20 by iherman-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ class Fixed
 		Fixed();
 		explicit Fixed(const int number);
 		explicit Fixed(const float number);
-		Fixed(const Fixed &to_cpy);
+		Fixed(const Fixed &other);
 		~Fixed();
+		Fixed	&operator= (const Fixed &other);
 
 		/* comparison */
 		bool	operator< (const Fixed &other) const;
+		bool	operator> (const Fixed &other) const;
 		bool	operator== (const Fixed &other) const;
 		bool	operator<= (const Fixed &other) const;
 		bool	operator>= (const Fixed &other) const;
@@ -42,14 +44,14 @@ class Fixed
 		static const Fixed&	min(const Fixed& f1, const Fixed& f2);
 		static const Fixed&	max(const Fixed& f1, const Fixed& f2);
 
-		/* setters */
-		Fixed	&operator= (const Fixed &to_cpy);
+		/* setter(s) & getter(s) */
 		void	setRawBits(int const raw);
 
-		/* getters */
+		int		getRawBits() const;
+
+		/* conversion */
 		float	toFloat() const;
 		int		toInt() const;	
-		int		getRawBits() const;
 
 		/* arithmetic operators */
 		Fixed	operator+ (const Fixed& other) const;
@@ -64,11 +66,11 @@ class Fixed
 		Fixed	operator/ (const Fixed& other) const;
 		Fixed	operator/ (const float number) const;
 
-		Fixed&	operator++();
-		Fixed	operator++(int);
+		Fixed&	operator++ ();
+		Fixed	operator++ (int);
 
-		Fixed&	operator--();
-		Fixed	operator--(int);
+		Fixed&	operator-- ();
+		Fixed	operator-- (int);
 };
 
 std::ostream	&operator<< (std::ostream &out, const Fixed &fixed);

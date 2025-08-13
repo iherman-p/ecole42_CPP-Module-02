@@ -11,7 +11,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@c++ $(FLAGS) $(OBJ) -o $(NAME)
 
-exclude_debug: FLAGS += -D ALLOW_FIXED_DEBUG=0
+exclude_debug: FLAGS += -DALLOW_FIXED_DEBUG=0
 exclude_debug: re
 
 %.o: %.cpp
